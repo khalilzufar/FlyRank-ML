@@ -6,7 +6,7 @@
 
 ## 0. Abstract
 
-We asked whether a model could rank content pages for refresh review better than a transparent stale-and-visible rule. We used 111,133 anonymized rows across 49 pseudonymous client groups and used `last-30d impressions < 80% of prior-30d impressions` as an observed target. A seeded random forest was compared with the rule under a client-grouped holdout. The model reached grouped Precision@50 0.580 versus 0.580 for the rule, with a 59.8% base rate. The output is decision support for human review, not a causal claim about Google traffic.
+We asked whether a model could rank content pages for refresh review better than a transparent stale-and-visible rule. We used 30,000 anonymized rows across 32 pseudonymous client groups and used `trend_direction == 'down'` as an observed target. A seeded random forest was compared with the rule under a client-grouped holdout. The model reached grouped Precision@50 0.500 versus 0.440 for the rule, with a 51.1% base rate. The output is decision support for human review, not a causal claim about Google traffic.
 
 ## 1. Problem framing
 
@@ -14,19 +14,19 @@ Editorial teams have limited review capacity. The output is a ranked queue of pa
 
 ## 2. Data safety
 
-This run uses the gated FlyRank warehouse release. Label-derived fields and pseudonymous IDs are excluded from the model matrix; IDs are used only for tracing and grouped validation. No names, domains, URLs, titles, raw queries, credentials, or raw warehouse exports are written to public artifacts.
+This run uses the bundled anonymized starter slice. Label-derived fields and pseudonymous IDs are excluded from the model matrix; IDs are used only for tracing and grouped validation. No names, domains, URLs, titles, raw queries, credentials, or raw warehouse exports are written to public artifacts.
 
 ## 3. Baseline
 
-The transparent baseline combines percentile ranks for staleness, visibility, CTR risk, and position risk. On the grouped holdout it achieved Precision@50 0.580.
+The transparent baseline combines percentile ranks for staleness, visibility, CTR risk, and position risk. On the grouped holdout it achieved Precision@50 0.440.
 
 ## 4. Model / analysis
 
-The model is a seeded random forest over numeric performance/content fields with missingness flags and one-hot categorical context. The target is the observed outcome `last-30d impressions < 80% of prior-30d impressions`.
+The model is a seeded random forest over numeric performance/content fields with missingness flags and one-hot categorical context. The target is the observed outcome `trend_direction == 'down'`.
 
 ## 5. Evaluation
 
-The primary split is a client-grouped holdout: 39 client groups for training and 10 for testing. The model's grouped Precision@50 was 0.580, average precision 0.716, and ROC AUC 0.696. The test base rate was 59.8%. A random row holdout is reported in `work/outputs/capstone_results.json` as a comparison, not the primary estimate.
+The primary split is a client-grouped holdout: 25 client groups for training and 7 for testing. The model's grouped Precision@50 was 0.500, average precision 0.631, and ROC AUC 0.684. The test base rate was 51.1%. A random row holdout is reported in `work/outputs/capstone_results.json` as a comparison, not the primary estimate.
 
 ## 6. Interpretation
 
@@ -42,4 +42,4 @@ Install `requirements.txt`, then run `work/notebooks/w06_validation_audit.ipynb`
 
 ## 9. Acknowledgments & data credit
 
-Built on the [FlyRank ML Internship dataset](https://flyrank.ai). This paper uses the gated FlyRank warehouse release.
+Built on the [FlyRank ML Internship dataset](https://flyrank.ai). This paper uses the bundled anonymized starter slice.

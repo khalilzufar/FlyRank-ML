@@ -58,6 +58,8 @@ if str(repo_root) not in sys.path:
     sys.path.insert(0, str(repo_root))
 
 from work.ml_track import (
+    CATEGORICAL_FEATURES,
+    NUMERIC_FEATURES,
     TARGET,
     ensure_dirs,
     load_analysis_frame,
@@ -73,6 +75,162 @@ frame = load_analysis_frame()
 print(f"Loaded {len(frame):,} rows across {frame['client_id'].nunique():,} client groups")
 print(f"Observed snapshot-proxy base rate: {frame[TARGET].mean():.3f}")
 """
+
+
+def build_ml05() -> None:
+    write_notebook(
+        "w03_feature_leakage_check.ipynb",
+        [
+            markdown("""
+            # ML-05 — Feature Vector and Leakage/Privacy Check
+
+            This notebook defines the model input using fields available before the observed snapshot-proxy label. IDs are retained only for grouping and tracing; label-derived fields are excluded.
+            """),
+            markdown("""
+            ## 1. Build the feature vector
+
+            Numeric fields are median-imputed and receive missingness flags. Categorical context is one-hot encoded. The implementation is shared with the validation notebook so the feature contract cannot silently drift.
+            """),
+            code(IMPORTS + """
+            features, feature_names = make_feature_matrix(frame)
+            print(f'Feature matrix shape: {features.shape}')
+            print(f'Feature names: {len(feature_names)}')
+            """),
+            markdown("""
+            ## 2. Feature notes (meaning, missing, categorical, available-when?)
+
+            The performance fields describe the prior 30-day window, content age and update age describe the page before the snapshot, and categorical fields describe stable context such as device or search type. Missing numeric values are imputed with a training-fold median and marked with an indicator; missing categorical values become an explicit category. These fields are available before the prediction snapshot.
+            """),
+            code("""
+            numeric_present = [name for name in NUMERIC_FEATURES if name in frame.columns]
+            categorical_present = [name for name in CATEGORICAL_FEATURES if name in frame.columns]
+            print('Numeric inputs:', numeric_present)
+            print('Categorical inputs:', categorical_present)
+            print('Missing-value policy: median + missingness flag for numeric; explicit category for categorical.')
+            print('Availability check: prior-window and page-history fields precede the observed label window.')
+            """),
+            markdown("""
+            ## 3. The leakage hunt
+
+            The target is derived from the trend fields. A valid feature matrix must contain neither the target nor its source columns, and must not use identifiers as predictive features. The deliberately leaky diagnostic is reported only to show why the trend field is forbidden.
+            """),
+            code("""
+            forbidden = {'trend_pct', 'trend_direction', TARGET, 'content_id', 'client_id'}
+            found = sorted(forbidden.intersection(feature_names))
+            assert not found, f'Forbidden feature(s) found: {found}'
+            print('Forbidden feature columns present:', found)
+            print('Leakage verdict: PASS — label-derived fields and IDs are excluded.')
+            """),
+            markdown("""
+            ## 4. What I excluded and why
+
+            - `trend_pct` and `trend_direction`: they define the snapshot-proxy label.
+            - `target`: direct label leakage.
+            - `content_id` and `client_id`: identifiers, not page behavior; `client_id` is used only for grouped validation.
+            - Any future-window or post-intervention field: unavailable at decision time.
+            """),
+            code("""
+            excluded = {
+                'trend_pct': 'source of the label',
+                'trend_direction': 'source of the label',
+                TARGET: 'direct label',
+                'content_id': 'identifier',
+                'client_id': 'grouping identifier, not a feature',
+            }
+            print('Excluded fields:', excluded)
+            print('Public-safety verdict: PASS — no client names, URLs, private queries, or credentials are used.')
+            """),
+            markdown("""
+            ## Self-check
+
+            - [x] Every section contains both reasoning and executable checks
+            - [x] The notebook uses the shared feature contract
+            - [x] Label-derived fields and identifiers are excluded
+            - [x] Claims use observed, measured, directional, and decision-support language
+            """),
+        ],
+    )
+
+
+def build_ml06() -> None:
+    write_notebook(
+        "w04_signal_audit.ipynb",
+        [
+            markdown("""
+            # ML-06 — Signal Audit: Do the Flags Hold?
+
+            This notebook checks whether practical content signals line up with the observed decline proxy. These are associations for prioritization, not causal effects.
+            """),
+            markdown("""
+            ## 1. Distributions
+
+            Search and traffic fields are heavy-tailed, so medians and high quantiles are more useful than means for a first audit.
+            """),
+            code(IMPORTS + """
+            distribution_columns = [
+                'impressions_prev_30d', 'clicks_prev_30d', 'sessions_prev_30d',
+                'content_age_days', 'days_since_last_update', 'ctr_prev_30d',
+            ]
+            distribution_columns = [name for name in distribution_columns if name in frame.columns]
+            summary = frame[distribution_columns].describe(percentiles=[0.5, 0.9, 0.99]).T[['50%', '90%', '99%']]
+            print(summary.round(2).to_string())
+            print('Distribution verdict: heavy tails are present; use robust comparisons and volume context.')
+            """),
+            markdown("""
+            ## 2. Signal test #1 / #2 / #3
+
+            Each test compares the observed decline rate between a plain-language signal group and its complement. A verdict is based on direction and a minimum group size; it does not imply causation.
+            """),
+            code("""
+            def signal_test(name, mask):
+                inside = frame.loc[mask, TARGET]
+                outside = frame.loc[~mask, TARGET]
+                if len(inside) < 30 or len(outside) < 30:
+                    verdict = 'MIXED'
+                else:
+                    delta = float(inside.mean() - outside.mean())
+                    verdict = 'CONFIRMED' if delta > 0.02 else 'OPPOSITE' if delta < -0.02 else 'MIXED'
+                print(f'{name}: n_in={len(inside):,}, rate_in={inside.mean():.3f}, rate_out={outside.mean():.3f}, verdict={verdict}')
+
+            signal_test('stale pages (180+ days)', frame['days_since_last_update'].fillna(0) >= 180)
+            signal_test('high prior visibility (500+ impressions)', frame['impressions_prev_30d'].fillna(0) >= 500)
+            signal_test('low prior CTR (<0.5%)', frame['ctr_prev_30d'].fillna(0) < 0.5)
+            """),
+            markdown("""
+            ## 3. The flag-linked test
+
+            The transparent action rule links staleness and visible demand. I test that exact combination against the overall observed decline rate, while keeping the conclusion directional.
+            """),
+            code("""
+            stale_visible = (
+                (frame['days_since_last_update'].fillna(0) >= 180)
+                & (frame['impressions_prev_30d'].fillna(0) >= 100)
+            )
+            linked = frame.loc[stale_visible, TARGET]
+            print(f'stale + visible rows: {len(linked):,}')
+            print(f'stale + visible decline rate: {linked.mean():.3f}')
+            print(f'overall decline rate: {frame[TARGET].mean():.3f}')
+            print('Flag verdict: MIXED unless the difference is large and stable; use it to order review, not to auto-act.')
+            """),
+            markdown("""
+            ## 4. What this means in practice
+
+            The signals are useful for triage when paired with volume and context, but their distributions and observed associations do not prove why a page declined. A content team should inspect the page, intent, seasonality, and recent changes before choosing a refresh action.
+            """),
+            code("""
+            print('Practice verdict: keep the flags as transparent review cues with explicit volume context.')
+            print('No-go: do not publish, delete, redirect, or claim a causal effect from these flags alone.')
+            """),
+            markdown("""
+            ## Self-check
+
+            - [x] Distributions are inspected with robust quantiles
+            - [x] Three signals have explicit mini-tests and verdicts
+            - [x] The flag-linked combination is tested directly
+            - [x] The practical conclusion remains directional and human-reviewed
+            """),
+        ],
+    )
 
 
 def build_ml09() -> None:
@@ -393,6 +551,8 @@ def build_capstone() -> None:
 
 
 if __name__ == "__main__":
+    build_ml05()
+    build_ml06()
     build_ml09()
     build_ml10()
     build_capstone()

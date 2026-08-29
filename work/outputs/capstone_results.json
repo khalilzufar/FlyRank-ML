@@ -1,5 +1,5 @@
 {
-  "clients": 49,
+  "clients": 32,
   "figures": [
     "work/figures/model_vs_baseline.svg",
     "work/figures/action_mix.svg",
@@ -7,15 +7,15 @@
   ],
   "grouped_split": {
     "baseline": {
-      "average_precision": 0.709764,
-      "base_rate": 0.597826,
-      "precision_at_100": 0.6,
-      "precision_at_20": 0.65,
-      "precision_at_50": 0.58,
-      "roc_auc": 0.65054
+      "average_precision": 0.492041,
+      "base_rate": 0.510952,
+      "precision_at_100": 0.46,
+      "precision_at_20": 0.55,
+      "precision_at_50": 0.44,
+      "roc_auc": 0.496874
     },
-    "false_positives_top_20": 10,
-    "feature_count": 76,
+    "false_positives_top_20": 9,
+    "feature_count": 79,
     "feature_names": [
       "search_volume",
       "missing_search_volume",
@@ -83,94 +83,97 @@
       "main_intent_navigational",
       "main_intent_transactional",
       "main_intent_unknown",
-      "age_tier_mid",
-      "age_tier_old",
-      "age_tier_young",
-      "freshness_tier_fresh",
-      "freshness_tier_recent",
-      "freshness_tier_stale",
-      "word_count_tier_long",
-      "word_count_tier_medium",
-      "word_count_tier_short",
+      "age_tier_181-365",
+      "age_tier_31-90",
+      "age_tier_365+",
+      "age_tier_91-180",
+      "freshness_tier_0-30",
+      "freshness_tier_181+",
+      "freshness_tier_31-90",
+      "freshness_tier_91-180",
+      "word_count_tier_1000-2000",
+      "word_count_tier_2000-3500",
+      "word_count_tier_3500+",
+      "word_count_tier_<1000",
       "word_count_tier_unknown"
     ],
     "model": {
-      "average_precision": 0.716477,
-      "base_rate": 0.597826,
-      "precision_at_100": 0.62,
-      "precision_at_20": 0.5,
-      "precision_at_50": 0.58,
-      "roc_auc": 0.695514
+      "average_precision": 0.631296,
+      "base_rate": 0.510952,
+      "precision_at_100": 0.5,
+      "precision_at_20": 0.55,
+      "precision_at_50": 0.5,
+      "roc_auc": 0.683591
     },
     "strategy": "grouped_client",
     "target": "is_declining_label",
-    "target_definition": "last-30d impressions < 80% of prior-30d impressions",
-    "test_clients": 10,
-    "test_rows": 17112,
+    "target_definition": "trend_direction == 'down'",
+    "test_clients": 7,
+    "test_rows": 6163,
     "top_feature_importance": [
       {
-        "feature": "days_since_last_update",
-        "importance": 0.12138555
-      },
-      {
-        "feature": "ctr_prev_30d",
-        "importance": 0.0754225
-      },
-      {
-        "feature": "content_age_days",
-        "importance": 0.07458821
-      },
-      {
-        "feature": "avg_position_prev_30d",
-        "importance": 0.07324982
-      },
-      {
-        "feature": "word_count",
-        "importance": 0.05076932
-      },
-      {
         "feature": "impressions_prev_30d",
-        "importance": 0.04951259
+        "importance": 0.20582125
       },
       {
-        "feature": "char_count",
-        "importance": 0.04408506
-      },
-      {
-        "feature": "users_prev_30d",
-        "importance": 0.04021398
-      },
-      {
-        "feature": "sessions_prev_30d",
-        "importance": 0.03305275
-      },
-      {
-        "feature": "query_position_prev_30d",
-        "importance": 0.03182729
-      },
-      {
-        "feature": "clicks_prev_30d",
-        "importance": 0.03068226
-      },
-      {
-        "feature": "query_impressions_prev_30d",
-        "importance": 0.02443486
-      },
-      {
-        "feature": "query_count_prev_30d",
-        "importance": 0.02251438
+        "feature": "missing_ctr_prev_30d",
+        "importance": 0.14566905
       },
       {
         "feature": "days_with_impressions_prev_30d",
-        "importance": 0.02112669
+        "importance": 0.08700267
+      },
+      {
+        "feature": "avg_position_prev_30d",
+        "importance": 0.07483841
+      },
+      {
+        "feature": "content_age_days",
+        "importance": 0.05653814
+      },
+      {
+        "feature": "age_tier_order",
+        "importance": 0.02959419
+      },
+      {
+        "feature": "sessions_prev_30d",
+        "importance": 0.02767066
       },
       {
         "feature": "days_with_sessions_prev_30d",
-        "importance": 0.0194969
+        "importance": 0.02584433
+      },
+      {
+        "feature": "word_count",
+        "importance": 0.02383976
+      },
+      {
+        "feature": "scroll_rate_prev_30d",
+        "importance": 0.02222339
+      },
+      {
+        "feature": "age_tier_365+",
+        "importance": 0.02181722
+      },
+      {
+        "feature": "char_count",
+        "importance": 0.02147473
+      },
+      {
+        "feature": "missing_char_count",
+        "importance": 0.01709173
+      },
+      {
+        "feature": "users_prev_30d",
+        "importance": 0.01704939
+      },
+      {
+        "feature": "ctr_prev_30d",
+        "importance": 0.01680654
       }
     ],
-    "train_clients": 39,
-    "train_rows": 94021
+    "train_clients": 25,
+    "train_rows": 23837
   },
   "interpretation": "The grouped result is the primary estimate because client_id repeats across rows.",
   "leakage_excluded": [
@@ -181,94 +184,93 @@
   ],
   "queue": {
     "action_counts": {
-      "expand_and_refresh": 25,
-      "monitor": 53418,
-      "refresh": 48539,
-      "refresh_and_review_ctr": 5299,
-      "refresh_and_review_engagement": 3852
+      "monitor": 16190,
+      "refresh": 11755,
+      "refresh_and_review_ctr": 1959,
+      "refresh_and_review_engagement": 96
     },
     "confidence_counts": {
-      "high": 22227,
-      "low": 55566,
-      "medium": 33340
+      "high": 6000,
+      "low": 15000,
+      "medium": 9000
     },
     "public_safety": "Queue is reviewer decision-support, not an automatic publishing decision.",
-    "rows_scored": 111133,
-    "target_base_rate": 0.643733,
+    "rows_scored": 30000,
+    "target_base_rate": 0.542067,
     "top_feature_importance": [
       {
-        "feature": "days_since_last_update",
-        "importance": 0.11912612
+        "feature": "impressions_prev_30d",
+        "importance": 0.23207777
       },
       {
-        "feature": "content_age_days",
-        "importance": 0.11841893
-      },
-      {
-        "feature": "ctr_prev_30d",
-        "importance": 0.07726397
-      },
-      {
-        "feature": "avg_position_prev_30d",
-        "importance": 0.07077774
+        "feature": "missing_ctr_prev_30d",
+        "importance": 0.17638305
       },
       {
         "feature": "days_with_impressions_prev_30d",
-        "importance": 0.0508303
+        "importance": 0.08168266
       },
       {
-        "feature": "users_prev_30d",
-        "importance": 0.03763685
+        "feature": "avg_position_prev_30d",
+        "importance": 0.07203932
       },
       {
-        "feature": "impressions_prev_30d",
-        "importance": 0.03734425
+        "feature": "content_age_days",
+        "importance": 0.05631589
+      },
+      {
+        "feature": "age_tier_365+",
+        "importance": 0.02356552
       },
       {
         "feature": "word_count",
-        "importance": 0.03275012
+        "importance": 0.02333063
       },
       {
-        "feature": "char_count",
-        "importance": 0.03206126
-      },
-      {
-        "feature": "sessions_prev_30d",
-        "importance": 0.03185134
-      },
-      {
-        "feature": "clicks_prev_30d",
-        "importance": 0.03171416
-      },
-      {
-        "feature": "query_position_prev_30d",
-        "importance": 0.03083857
+        "feature": "days_with_sessions_prev_30d",
+        "importance": 0.02165689
       },
       {
         "feature": "age_tier_order",
-        "importance": 0.0204335
+        "importance": 0.02096899
       },
       {
-        "feature": "word_count_tier_long",
-        "importance": 0.01973742
+        "feature": "char_count",
+        "importance": 0.02013657
       },
       {
-        "feature": "query_ctr_prev_30d",
-        "importance": 0.01937272
+        "feature": "sessions_prev_30d",
+        "importance": 0.0199447
+      },
+      {
+        "feature": "scroll_rate_prev_30d",
+        "importance": 0.01935318
+      },
+      {
+        "feature": "ctr_prev_30d",
+        "importance": 0.01845655
+      },
+      {
+        "feature": "days_since_last_update",
+        "importance": 0.01829982
+      },
+      {
+        "feature": "users_prev_30d",
+        "importance": 0.01614775
       }
     ]
   },
   "random_split": {
     "baseline": {
-      "average_precision": 0.724252,
-      "base_rate": 0.643722,
-      "precision_at_100": 0.78,
-      "precision_at_20": 0.9,
-      "precision_at_50": 0.82,
-      "roc_auc": 0.613056
+      "average_precision": 0.610974,
+      "base_rate": 0.542,
+      "precision_at_100": 0.82,
+      "precision_at_20": 0.95,
+      "precision_at_50": 0.9,
+      "roc_auc": 0.586189
     },
-    "false_positives_top_20": 0,
-    "feature_count": 76,
+    "false_positives_top_20": 1,
+    "feature_count": 79,
     "feature_names": [
       "search_volume",
       "missing_search_volume",
@@ -336,97 +338,100 @@
       "main_intent_navigational",
       "main_intent_transactional",
       "main_intent_unknown",
-      "age_tier_mid",
-      "age_tier_old",
-      "age_tier_young",
-      "freshness_tier_fresh",
-      "freshness_tier_recent",
-      "freshness_tier_stale",
-      "word_count_tier_long",
-      "word_count_tier_medium",
-      "word_count_tier_short",
+      "age_tier_181-365",
+      "age_tier_31-90",
+      "age_tier_365+",
+      "age_tier_91-180",
+      "freshness_tier_0-30",
+      "freshness_tier_181+",
+      "freshness_tier_31-90",
+      "freshness_tier_91-180",
+      "word_count_tier_1000-2000",
+      "word_count_tier_2000-3500",
+      "word_count_tier_3500+",
+      "word_count_tier_<1000",
       "word_count_tier_unknown"
     ],
     "model": {
-      "average_precision": 0.846806,
-      "base_rate": 0.643722,
-      "precision_at_100": 1.0,
-      "precision_at_20": 1.0,
-      "precision_at_50": 1.0,
-      "roc_auc": 0.770306
+      "average_precision": 0.79083,
+      "base_rate": 0.542,
+      "precision_at_100": 0.94,
+      "precision_at_20": 0.95,
+      "precision_at_50": 0.94,
+      "roc_auc": 0.789095
     },
     "strategy": "random",
     "target": "is_declining_label",
-    "target_definition": "last-30d impressions < 80% of prior-30d impressions",
-    "test_clients": 47,
-    "test_rows": 22227,
+    "target_definition": "trend_direction == 'down'",
+    "test_clients": 31,
+    "test_rows": 6000,
     "top_feature_importance": [
       {
-        "feature": "days_since_last_update",
-        "importance": 0.11635356
+        "feature": "impressions_prev_30d",
+        "importance": 0.240086
       },
       {
-        "feature": "content_age_days",
-        "importance": 0.10853939
-      },
-      {
-        "feature": "ctr_prev_30d",
-        "importance": 0.07917535
-      },
-      {
-        "feature": "avg_position_prev_30d",
-        "importance": 0.07263043
+        "feature": "missing_ctr_prev_30d",
+        "importance": 0.1664368
       },
       {
         "feature": "days_with_impressions_prev_30d",
-        "importance": 0.05382757
+        "importance": 0.07768267
       },
       {
-        "feature": "sessions_prev_30d",
-        "importance": 0.03731336
+        "feature": "avg_position_prev_30d",
+        "importance": 0.07099385
       },
       {
-        "feature": "impressions_prev_30d",
-        "importance": 0.03518587
+        "feature": "content_age_days",
+        "importance": 0.05451021
+      },
+      {
+        "feature": "days_with_sessions_prev_30d",
+        "importance": 0.02559221
+      },
+      {
+        "feature": "age_tier_365+",
+        "importance": 0.02404298
+      },
+      {
+        "feature": "age_tier_order",
+        "importance": 0.0221761
       },
       {
         "feature": "word_count",
-        "importance": 0.03427692
+        "importance": 0.0213425
       },
       {
-        "feature": "users_prev_30d",
-        "importance": 0.03419455
+        "feature": "scroll_rate_prev_30d",
+        "importance": 0.02058913
       },
       {
         "feature": "char_count",
-        "importance": 0.03323937
+        "importance": 0.02024161
       },
       {
-        "feature": "query_position_prev_30d",
-        "importance": 0.03217634
+        "feature": "sessions_prev_30d",
+        "importance": 0.0192653
       },
       {
-        "feature": "clicks_prev_30d",
-        "importance": 0.02943448
+        "feature": "users_prev_30d",
+        "importance": 0.01857535
       },
       {
-        "feature": "query_count_prev_30d",
-        "importance": 0.02256448
+        "feature": "ctr_prev_30d",
+        "importance": 0.01788585
       },
       {
-        "feature": "query_ctr_prev_30d",
-        "importance": 0.02129619
-      },
-      {
-        "feature": "query_impressions_prev_30d",
-        "importance": 0.02075964
+        "feature": "days_since_last_update",
+        "importance": 0.01697792
       }
     ],
-    "train_clients": 49,
-    "train_rows": 88906
+    "train_clients": 32,
+    "train_rows": 24000
   },
-  "rows": 111133,
-  "source": "gated FlyRank warehouse release v20260703",
+  "rows": 30000,
+  "source": "bundled anonymized starter slice",
   "target": "is_declining_label",
-  "target_definition": "last-30d impressions < 80% of prior-30d impressions"
+  "target_definition": "trend_direction == 'down'"
 }

@@ -1,79 +1,78 @@
 {
   "action_counts": {
-    "expand_and_refresh": 25,
-    "monitor": 53418,
-    "refresh": 48539,
-    "refresh_and_review_ctr": 5299,
-    "refresh_and_review_engagement": 3852
+    "monitor": 16190,
+    "refresh": 11755,
+    "refresh_and_review_ctr": 1959,
+    "refresh_and_review_engagement": 96
   },
   "confidence_counts": {
-    "high": 22227,
-    "low": 55566,
-    "medium": 33340
+    "high": 6000,
+    "low": 15000,
+    "medium": 9000
   },
   "public_safety": "Queue is reviewer decision-support, not an automatic publishing decision.",
-  "rows_scored": 111133,
-  "target_base_rate": 0.643733,
+  "rows_scored": 30000,
+  "target_base_rate": 0.542067,
   "top_feature_importance": [
     {
-      "feature": "days_since_last_update",
-      "importance": 0.11912612
+      "feature": "impressions_prev_30d",
+      "importance": 0.23207777
     },
     {
-      "feature": "content_age_days",
-      "importance": 0.11841893
-    },
-    {
-      "feature": "ctr_prev_30d",
-      "importance": 0.07726397
-    },
-    {
-      "feature": "avg_position_prev_30d",
-      "importance": 0.07077774
+      "feature": "missing_ctr_prev_30d",
+      "importance": 0.17638305
     },
     {
       "feature": "days_with_impressions_prev_30d",
-      "importance": 0.0508303
+      "importance": 0.08168266
     },
     {
-      "feature": "users_prev_30d",
-      "importance": 0.03763685
+      "feature": "avg_position_prev_30d",
+      "importance": 0.07203932
     },
     {
-      "feature": "impressions_prev_30d",
-      "importance": 0.03734425
+      "feature": "content_age_days",
+      "importance": 0.05631589
+    },
+    {
+      "feature": "age_tier_365+",
+      "importance": 0.02356552
     },
     {
       "feature": "word_count",
-      "importance": 0.03275012
+      "importance": 0.02333063
     },
     {
-      "feature": "char_count",
-      "importance": 0.03206126
-    },
-    {
-      "feature": "sessions_prev_30d",
-      "importance": 0.03185134
-    },
-    {
-      "feature": "clicks_prev_30d",
-      "importance": 0.03171416
-    },
-    {
-      "feature": "query_position_prev_30d",
-      "importance": 0.03083857
+      "feature": "days_with_sessions_prev_30d",
+      "importance": 0.02165689
     },
     {
       "feature": "age_tier_order",
-      "importance": 0.0204335
+      "importance": 0.02096899
     },
     {
-      "feature": "word_count_tier_long",
-      "importance": 0.01973742
+      "feature": "char_count",
+      "importance": 0.02013657
     },
     {
-      "feature": "query_ctr_prev_30d",
-      "importance": 0.01937272
+      "feature": "sessions_prev_30d",
+      "importance": 0.0199447
+    },
+    {
+      "feature": "scroll_rate_prev_30d",
+      "importance": 0.01935318
+    },
+    {
+      "feature": "ctr_prev_30d",
+      "importance": 0.01845655
+    },
+    {
+      "feature": "days_since_last_update",
+      "importance": 0.01829982
+    },
+    {
+      "feature": "users_prev_30d",
+      "importance": 0.01614775
     }
   ]
 }
