@@ -94,8 +94,8 @@
       .step p { color: var(--muted); font-size: .9rem; }
       .foot { display: flex; justify-content: space-between; gap: 30px; padding: 36px 0 55px; align-items: start; }
       .foot p { color: var(--muted); max-width: 480px; margin: 0; }
-      .badge { border: 1px solid var(--line); padding: 13px 16px; font: .76rem monospace; max-width: 250px; }
-      .badge strong { display: block; font: 700 1rem Arial, sans-serif; margin-bottom: 5px; }
+      .status-card { border: 1px solid var(--line); padding: 13px 16px; font: .76rem monospace; max-width: 250px; }
+      .status-card strong { display: block; font: 700 1rem Arial, sans-serif; margin-bottom: 5px; }
       .status { display: inline-flex; align-items: center; gap: 8px; font: .72rem monospace; color: var(--muted); }
       .status::before { content: ""; width: 8px; height: 8px; background: var(--moss); border-radius: 50%; }
       .privacy-note { color: var(--muted); font-size: .78rem; margin-top: 20px; }
@@ -161,7 +161,7 @@
       </section>
     </main>
 
-    <footer class="wrap foot"><div><p class="eyebrow">Khalil Zufar / 2026</p><p>Built as a public-safe AI Fluency portfolio. The official FlyRank completion badge is pending capstone review; this page does not claim it early.</p><p class="privacy-note"><a href="https://github.com/khalilzufar/FlyRank-ML">GitHub</a> · <a href="https://khalilzufar.github.io/FlyRank-ML/">ML paper</a> · <a href="../blank/">first live page</a></p></div><div class="badge"><strong>FlyRank status</strong>ML capstone submitted<br>Graduate badge: pending review</div></footer>
+    <footer class="wrap foot"><div><p class="eyebrow">Khalil Zufar / 2026</p><p>Built as a public-safe AI Fluency portfolio. Case evidence, agent boundaries, and build notes are documented for review.</p><p class="privacy-note"><a href="https://github.com/khalilzufar/FlyRank-ML">GitHub</a> · <a href="https://khalilzufar.github.io/FlyRank-ML/">ML paper</a> · <a href="../blank/">first live page</a></p></div><div class="status-card"><strong>Portfolio status</strong>Public build live<br>Case + agent + workflow</div></footer>
     <script>
       const cases = [
         {title: 'Grouped holdout', tag: 'model', text: 'The model reached Precision@50 0.580, matching the transparent baseline on the primary client-grouped split.', meta: 'measured / model vs baseline'},
