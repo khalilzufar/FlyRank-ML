@@ -1,14 +1,14 @@
-# FlyRank ML Internship — Starter Repo
+# FlyRank ML Internship — Applied Search Intelligence
 
-**Applied Search Intelligence: Google Search Ranking & Discoverability**
+This repository documents work from the FlyRank ML Internship, focused on Google Search ranking,
+content refresh prioritization, and reproducible machine-learning workflows.
 
-This is the starting point for the FlyRank ML Internship. You **clone it into your own public
-repo** (one click — *Use this template*), build everything there, and submit that repo URL on
-each assignment in your portal — it's your workspace, your submission, and your portfolio all
-at once. The rhythm is simple: do the work, commit it, submit on the card. Done.
+It combines guided notebooks, a reference pipeline, assignment work, and capstone experiments.
+The work/ directory is the portfolio workspace; the shared notebooks and scripts provide the
+baseline context needed to reproduce and extend the analysis.
 
-Everything here runs on a small **anonymized** slice of real FlyRank search data. No credentials,
-no private client data, no setup headaches.
+The repository uses a small **anonymized** slice of FlyRank search data. It contains no credentials
+or private client information. Read the data-use guidance before working with any larger release.
 
 > **New here?** Two reads: **[SETUP.md](SETUP.md)** (GitHub, Colab, and data access — ten
 > minutes, with every silent pitfall flagged), then **[GUIDE.md](GUIDE.md)** (every file
