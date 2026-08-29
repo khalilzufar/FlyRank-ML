@@ -1,0 +1,79 @@
+{
+  "action_counts": {
+    "expand_and_refresh": 25,
+    "monitor": 53418,
+    "refresh": 48539,
+    "refresh_and_review_ctr": 5299,
+    "refresh_and_review_engagement": 3852
+  },
+  "confidence_counts": {
+    "high": 22227,
+    "low": 55566,
+    "medium": 33340
+  },
+  "public_safety": "Queue is reviewer decision-support, not an automatic publishing decision.",
+  "rows_scored": 111133,
+  "target_base_rate": 0.643733,
+  "top_feature_importance": [
+    {
+      "feature": "days_since_last_update",
+      "importance": 0.11912612
+    },
+    {
+      "feature": "content_age_days",
+      "importance": 0.11841893
+    },
+    {
+      "feature": "ctr_prev_30d",
+      "importance": 0.07726397
+    },
+    {
+      "feature": "avg_position_prev_30d",
+      "importance": 0.07077774
+    },
+    {
+      "feature": "days_with_impressions_prev_30d",
+      "importance": 0.0508303
+    },
+    {
+      "feature": "users_prev_30d",
+      "importance": 0.03763685
+    },
+    {
+      "feature": "impressions_prev_30d",
+      "importance": 0.03734425
+    },
+    {
+      "feature": "word_count",
+      "importance": 0.03275012
+    },
+    {
+      "feature": "char_count",
+      "importance": 0.03206126
+    },
+    {
+      "feature": "sessions_prev_30d",
+      "importance": 0.03185134
+    },
+    {
+      "feature": "clicks_prev_30d",
+      "importance": 0.03171416
+    },
+    {
+      "feature": "query_position_prev_30d",
+      "importance": 0.03083857
+    },
+    {
+      "feature": "age_tier_order",
+      "importance": 0.0204335
+    },
+    {
+      "feature": "word_count_tier_long",
+      "importance": 0.01973742
+    },
+    {
+      "feature": "query_ctr_prev_30d",
+      "importance": 0.01937272
+    }
+  ]
+}
