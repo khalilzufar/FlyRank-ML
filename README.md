@@ -122,6 +122,13 @@ live, so they always reflect the current data and environment.
 - Frame every result as **observed / measured / directional / decision-support** — never
   "I predicted Google's algorithm."
 
+## AI Fluency portfolio
+
+The companion AI Fluency package lives in [`ai_fluency/`](ai_fluency/) and its public showcase
+is [live on GitHub Pages](https://khalilzufar.github.io/FlyRank-ML/ai/). It includes a responsive
+portfolio, an interactive case explorer, a bounded standard-library personal agent, workflow
+documentation, and the responsive/public-safety QA notes.
+
 The `.gitignore` blocks datasets by default, and CI fails any commit that includes a dataset.
 
 ---

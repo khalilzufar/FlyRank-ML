@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f4f0e7">
+    <title>Khalil Zufar · building with evidence</title>
+    <meta name="description" content="A public AI Fluency portfolio about building useful systems without losing the evidence.">
+    <link rel="canonical" href="https://khalilzufar.github.io/FlyRank-ML/ai/">
+    <meta property="og:title" content="Khalil Zufar · building with evidence">
+    <meta property="og:description" content="A public notebook for building with AI without losing the plot.">
+    <meta property="og:type" content="website">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <style>
+      :root {
+        --ink: #18231c;
+        --muted: #59635c;
+        --paper: #f4f0e7;
+        --paper-2: #ebe4d7;
+        --lilac: #d7c8ff;
+        --yellow: #f6c85f;
+        --moss: #a8c6a5;
+        --coral: #f28b6b;
+        --line: rgba(24,35,28,.18);
+        --shadow: 0 18px 0 rgba(24,35,28,.09);
+      }
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body { margin: 0; background: var(--paper); color: var(--ink); font-family: Arial, sans-serif; line-height: 1.55; }
+      a { color: inherit; }
+      a:focus-visible, button:focus-visible, input:focus-visible { outline: 3px solid var(--yellow); outline-offset: 4px; }
+      .wrap { width: min(1120px, calc(100% - 40px)); margin: 0 auto; }
+      .topbar { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 22px 0; border-bottom: 1px solid var(--line); }
+      .mark { font-weight: 800; letter-spacing: -.04em; text-decoration: none; }
+      .mark span { display: inline-block; background: var(--yellow); padding: 3px 7px; margin-right: 5px; transform: rotate(-2deg); }
+      nav { display: flex; gap: 20px; flex-wrap: wrap; font-size: .85rem; color: var(--muted); }
+      nav a { text-decoration: none; }
+      nav a:hover { color: var(--ink); }
+      .eyebrow { text-transform: uppercase; letter-spacing: .15em; font: 700 .72rem/1.2 monospace; color: var(--muted); }
+      .hero { display: grid; grid-template-columns: 1.15fr .85fr; gap: clamp(36px, 7vw, 100px); padding: 94px 0 84px; align-items: end; }
+      h1, h2, h3 { font-family: Georgia, serif; font-weight: 400; letter-spacing: -.055em; line-height: .98; margin: 0; }
+      h1 { font-size: clamp(4rem, 10vw, 8.4rem); max-width: 790px; }
+      .hero h1 em { background: var(--lilac); font-style: normal; padding: 0 .08em; }
+      .lede { color: var(--muted); font-size: 1.12rem; max-width: 39rem; margin: 28px 0 0; }
+      .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 30px; }
+      .button { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 10px 15px; border: 1px solid var(--ink); border-radius: 999px; text-decoration: none; font-weight: 700; font-size: .9rem; }
+      .button.primary { background: var(--ink); color: var(--paper); }
+      .button:hover { transform: translateY(-2px); }
+      .paper-card { position: relative; background: var(--paper-2); border: 1px solid var(--line); padding: 26px; box-shadow: var(--shadow); transform: rotate(2deg); }
+      .paper-card::before { content: "PUBLIC NOTEBOOK / 01"; display: block; font: 700 .68rem monospace; color: var(--muted); letter-spacing: .12em; margin-bottom: 42px; }
+      .paper-card h2 { font-size: clamp(2.3rem, 5vw, 4.3rem); }
+      .paper-card p { color: var(--muted); }
+      .ribbon { display: grid; grid-template-columns: auto 1fr; gap: 15px; margin-top: 22px; align-items: stretch; }
+      .ribbon-bar { width: 8px; background: var(--yellow); min-height: 168px; }
+      .ribbon-copy { font: .78rem/1.45 monospace; }
+      .ribbon-copy strong { display: block; font-family: Arial, sans-serif; font-size: .92rem; margin-bottom: 4px; }
+      section { padding: 76px 0; border-top: 1px solid var(--line); }
+      .section-head { display: flex; justify-content: space-between; align-items: end; gap: 24px; margin-bottom: 28px; }
+      h2 { font-size: clamp(2.7rem, 6vw, 5.4rem); max-width: 700px; }
+      .section-head p { max-width: 310px; margin: 0; color: var(--muted); }
+      .proof-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+      .proof { padding: 22px; border: 1px solid var(--line); min-height: 180px; }
+      .proof:nth-child(1) { background: var(--moss); }
+      .proof:nth-child(2) { background: var(--lilac); }
+      .proof:nth-child(3) { background: var(--yellow); }
+      .proof b { font: 700 2.7rem Georgia, serif; display: block; margin-bottom: 18px; }
+      .proof p { margin: 0; max-width: 250px; }
+      .explorer { display: grid; grid-template-columns: .75fr 1.25fr; gap: 24px; align-items: start; }
+      .controls { border: 1px solid var(--line); padding: 20px; background: #fffaf0; position: sticky; top: 16px; }
+      label { display: block; font: 700 .72rem monospace; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 8px; }
+      input { width: 100%; border: 1px solid var(--line); background: var(--paper); color: var(--ink); padding: 12px; font: inherit; border-radius: 0; }
+      .filter-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+      .filter { border: 1px solid var(--line); background: transparent; padding: 8px 10px; cursor: pointer; font: 700 .78rem Arial, sans-serif; }
+      .filter[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+      .case-list { display: grid; gap: 12px; }
+      .case { border: 1px solid var(--line); padding: 22px; background: #fffaf0; display: grid; grid-template-columns: 9px 1fr; gap: 18px; }
+      .case-mark { background: var(--coral); }
+      .case h3 { font-size: 2rem; margin-bottom: 8px; }
+      .case p { color: var(--muted); margin: 6px 0; }
+      .case .meta { font: .72rem monospace; color: var(--ink); margin-top: 15px; }
+      .empty { padding: 24px; border: 1px dashed var(--line); color: var(--muted); }
+      .agent { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: stretch; }
+      .agent-copy { background: var(--ink); color: var(--paper); padding: 28px; }
+      .agent-copy p { color: #c9d0ca; }
+      .agent-copy h3 { color: var(--yellow); font-size: 3rem; }
+      .terminal { background: #111713; color: #c9e8bc; padding: 24px; font: .82rem/1.7 monospace; overflow-wrap: anywhere; }
+      .terminal .prompt { color: var(--yellow); }
+      .terminal .muted { color: #768378; }
+      .workflow { display: grid; grid-template-columns: repeat(5, 1fr); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+      .step { padding: 20px 15px; border-right: 1px solid var(--line); min-height: 170px; }
+      .step:last-child { border-right: 0; }
+      .step b { font: 700 .7rem monospace; color: var(--muted); }
+      .step h3 { font-size: 1.6rem; margin: 20px 0 8px; }
+      .step p { color: var(--muted); font-size: .9rem; }
+      .foot { display: flex; justify-content: space-between; gap: 30px; padding: 36px 0 55px; align-items: start; }
+      .foot p { color: var(--muted); max-width: 480px; margin: 0; }
+      .badge { border: 1px solid var(--line); padding: 13px 16px; font: .76rem monospace; max-width: 250px; }
+      .badge strong { display: block; font: 700 1rem Arial, sans-serif; margin-bottom: 5px; }
+      .status { display: inline-flex; align-items: center; gap: 8px; font: .72rem monospace; color: var(--muted); }
+      .status::before { content: ""; width: 8px; height: 8px; background: var(--moss); border-radius: 50%; }
+      .privacy-note { color: var(--muted); font-size: .78rem; margin-top: 20px; }
+      @media (max-width: 760px) {
+        .wrap { width: min(100% - 28px, 560px); }
+        .topbar, .foot { align-items: flex-start; flex-direction: column; }
+        .hero, .explorer, .agent { grid-template-columns: 1fr; padding-top: 58px; }
+        h1 { font-size: clamp(3.6rem, 18vw, 6rem); }
+        .paper-card { transform: none; }
+        .proof-grid { grid-template-columns: 1fr; }
+        .controls { position: static; }
+        .workflow { grid-template-columns: 1fr; }
+        .step { border-right: 0; border-bottom: 1px solid var(--line); min-height: 0; }
+        .step:last-child { border-bottom: 0; }
+      }
+      @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { transition: none !important; transform: none !important; } }
+    </style>
+  </head>
+  <body>
+    <header class="wrap topbar">
+      <a class="mark" href="./"><span>KZ</span> building with evidence</a>
+      <nav aria-label="Primary navigation"><a href="#case">case</a><a href="#agent">agent</a><a href="#process">process</a><a href="https://github.com/khalilzufar/FlyRank-ML">repo ↗</a></nav>
+    </header>
+
+    <main>
+      <section class="wrap hero" aria-labelledby="hero-title">
+        <div>
+          <p class="eyebrow">AI Fluency / public notebook</p>
+          <h1 id="hero-title">Build useful things. Keep the <em>evidence.</em></h1>
+          <p class="lede">I am Khalil Zufar. This is a small public record of building with AI: one measured ML case, one bounded agent, and the decisions between them.</p>
+          <div class="hero-actions"><a class="button primary" href="https://khalilzufar.github.io/FlyRank-ML/">Read the paper ↗</a><a class="button" href="#case">Try the feature ↓</a></div>
+          <p class="privacy-note"><span class="status">static, public-safe, no tracking ID</span></p>
+        </div>
+        <aside class="paper-card" aria-label="Featured case summary">
+          <p class="eyebrow">featured case / content refresh priority</p>
+          <h2>Which pages look worth reviewing first?</h2>
+          <p>A grouped-holdout ranking workflow turns observed search-performance signals into a human review queue.</p>
+          <div class="ribbon"><div class="ribbon-bar"></div><div class="ribbon-copy"><strong>Question → result → next check</strong>Observed decline proxy<br>Model Precision@50: 0.580<br>Baseline Precision@50: 0.580<br><br>Next: test a future time window.</div></div>
+        </aside>
+      </section>
+
+      <section class="wrap" aria-labelledby="proof-title">
+        <div class="section-head"><h2 id="proof-title">A portfolio should make the proof easy to find.</h2><p>No mystery metrics. No “AI-powered” fog. Just the work, the boundary, and a next question.</p></div>
+        <div class="proof-grid"><article class="proof"><b>111k</b><p>anonymized content rows in the gated warehouse run</p></article><article class="proof"><b>49</b><p>pseudonymous client groups used for the primary holdout</p></article><article class="proof"><b>0.580</b><p>grouped Precision@50 for both model and transparent baseline</p></article></div>
+      </section>
+
+      <section class="wrap" id="case" aria-labelledby="case-title">
+        <div class="section-head"><h2 id="case-title">Explore the case, not just the conclusion.</h2><p>Search the public-safe evidence cards. The empty state is part of the design.</p></div>
+        <div class="explorer">
+          <div class="controls"><label for="case-search">Find a signal</label><input id="case-search" type="search" placeholder="try “refresh” or “holdout”" autocomplete="off"><div class="filter-row" role="group" aria-label="Filter cases"><button class="filter" data-filter="all" aria-pressed="true">all</button><button class="filter" data-filter="model" aria-pressed="false">model</button><button class="filter" data-filter="action" aria-pressed="false">action</button></div><p class="privacy-note" id="event-note">Interactions stay in this browser only.</p></div>
+          <div class="case-list" id="case-list" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <section class="wrap" id="agent" aria-labelledby="agent-title">
+        <div class="section-head"><h2 id="agent-title">A tiny agent with a small surface area.</h2><p>Three read-only tools. One live public-page check. No publish button hiding in the shadows.</p></div>
+        <div class="agent"><div class="agent-copy"><p class="eyebrow">personal agent / explainable by design</p><h3>Ask what to improve next.</h3><p>The agent searches a public-safe case registry, recommends one bounded next step, and can check the live paper URL. It cannot edit, submit, or send.</p><a class="button" href="https://github.com/khalilzufar/FlyRank-ML/tree/main/ai_fluency/agent">Read the design ↗</a></div><div class="terminal" aria-label="Agent run preview"><div class="muted">$ python personal_agent.py --query “check the public paper”</div><br><div><span class="prompt">tool</span> search_cases → flyrank-refresh</div><div><span class="prompt">tool</span> recommend_next_step → time-aware check</div><div><span class="prompt">tool</span> fetch_public_page → HTTP 200</div><br><div>answer → decision support, not a causal claim.</div><p><a href="demo.mp4">Watch the 16-second demo ↗</a></p></div></div>
+      </section>
+
+      <section class="wrap" id="process" aria-labelledby="process-title">
+        <div class="section-head"><h2 id="process-title">The repeatable part matters too.</h2><p>A five-step workflow keeps the next case from turning into a pile of disconnected prompts.</p></div>
+        <div class="workflow"><article class="step"><b>01 / frame</b><h3>Question</h3><p>Say what decision the work should support.</p></article><article class="step"><b>02 / ground</b><h3>Evidence</h3><p>Keep the receipt, split, and boundary together.</p></article><article class="step"><b>03 / shape</b><h3>Story</h3><p>Choose one chart, one metric, and one action.</p></article><article class="step"><b>04 / check</b><h3>Safety</h3><p>Remove private data and causal overreach.</p></article><article class="step"><b>05 / decide</b><h3>Human</h3><p>Review, revise, or stop before publishing.</p></article></div>
+      </section>
+    </main>
+
+    <footer class="wrap foot"><div><p class="eyebrow">Khalil Zufar / 2026</p><p>Built as a public-safe AI Fluency portfolio. The official FlyRank completion badge is pending capstone review; this page does not claim it early.</p><p class="privacy-note"><a href="https://github.com/khalilzufar/FlyRank-ML">GitHub</a> · <a href="https://khalilzufar.github.io/FlyRank-ML/">ML paper</a> · <a href="../blank/">first live page</a></p></div><div class="badge"><strong>FlyRank status</strong>ML capstone submitted<br>Graduate badge: pending review</div></footer>
+    <script>
+      const cases = [
+        {title: 'Grouped holdout', tag: 'model', text: 'The model reached Precision@50 0.580, matching the transparent baseline on the primary client-grouped split.', meta: 'measured / model vs baseline'},
+        {title: 'Action playbook', tag: 'action', text: 'The queue turns risk signals into monitor, refresh, and review actions; editors remain in the loop.', meta: 'decision support / human review'},
+        {title: 'Next honest check', tag: 'model', text: 'A future-window evaluation is the next test before treating the ranking as a durable signal.', meta: 'limitation / time-aware validation'}
+      ];
+      const list = document.querySelector('#case-list'); const search = document.querySelector('#case-search'); const note = document.querySelector('#event-note'); let active = 'all';
+      function countEvent(name) { try { const key = 'kz-ai-events'; const data = JSON.parse(localStorage.getItem(key) || '{}'); data[name] = (data[name] || 0) + 1; localStorage.setItem(key, JSON.stringify(data)); const total = Object.values(data).reduce((a,b) => a + b, 0); note.textContent = `Local-only interactions in this browser: ${total}.`; } catch (_) { note.textContent = 'Local-only analytics unavailable; the page still works.'; } }
+      function render() { const q = search.value.trim().toLowerCase(); const visible = cases.filter(c => (active === 'all' || c.tag === active) && (!q || `${c.title} ${c.text} ${c.meta}`.toLowerCase().includes(q))); list.innerHTML = visible.length ? visible.map(c => `<article class="case"><div class="case-mark"></div><div><h3>${c.title}</h3><p>${c.text}</p><p class="meta">${c.meta}</p></div></article>`).join('') : '<p class="empty">No matching cases — clear the filter or try “model”.</p>'; }
+      search.addEventListener('input', () => { countEvent('search'); render(); });
+      document.querySelectorAll('.filter').forEach(button => button.addEventListener('click', () => { active = button.dataset.filter; document.querySelectorAll('.filter').forEach(b => b.setAttribute('aria-pressed', b === button ? 'true' : 'false')); countEvent(`filter-${active}`); render(); }));
+      render();
+    </script>
+  </body>
+</html>
